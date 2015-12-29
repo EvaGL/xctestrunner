@@ -32,7 +32,7 @@ public class TestRunner {
                 "-XCTest",
                 scope.getCommandLineArgument(),
                 testBundle.getAbsolutePath()
-        );
+        ).redirectErrorStream(true);
         this.listener = listener;
     }
 
@@ -51,7 +51,7 @@ public class TestRunner {
         }
         process = processBuilder.start();
 
-        TestingOutputParser parser = new TestingOutputParser(process.getErrorStream(), listener);
+        TestingOutputParser parser = new TestingOutputParser(process.getInputStream(), listener);
         parserExecutor.execute(parser::parse);
     }
 
@@ -67,7 +67,7 @@ public class TestRunner {
             throw new IllegalStateException("Process wasn't started yet");
         }
 
-        process.destroy();
+        process.destroyForcibly();
     }
 
 }
