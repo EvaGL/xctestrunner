@@ -19,14 +19,24 @@ public abstract class CompositeTestEntity<Child extends TestEntity> extends Test
         children.add(entity);
     }
 
+    /**
+     * @return child by index or null if position is out of bounds
+     */
     public Child getChild(int position) {
-        return children.get(position);
+        try {
+            return children.get(position);
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
     }
 
     public int getChildCount() {
         return children.size();
     }
 
+    /**
+     * @return index of child or -1 if it's not a child of this node
+     */
     public int getIndexOfChild(TestEntity child) {
         for (int i = 0; i < children.size(); ++i) {
             if (children.get(i).equals(child)) {
