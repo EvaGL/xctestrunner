@@ -29,10 +29,9 @@ public class TestRunnerController {
 
     public void runTests(TestEntity entity) {
         if (runnerHandler != null) {
-            runnerHandler.stopNotifying();
+            runnerHandler.stop(true);
             runnerHandler = null;
         }
-        stopTests();
 
         runnerHandler = new TestRunnerHandler(treeModel, view, entity);
         runnerHandler.run();
@@ -40,7 +39,7 @@ public class TestRunnerController {
 
     public void stopTests() {
         if (runnerHandler != null) {
-            runnerHandler.stop();
+            runnerHandler.stop(false);
             runnerHandler = null;
         }
     }

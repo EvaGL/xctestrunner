@@ -73,4 +73,8 @@ public class TestRunner {
         process.destroyForcibly();
     }
 
+    public boolean wasStarted() {
+        return process != null;
+    }
+
 }

@@ -23,7 +23,7 @@ public class TestRunnerHandler implements TestingStateListener {
 
     private final TestRunner runner;
 
-    private volatile boolean isStopped = false;
+    private volatile boolean stopNotifications = false;
 
     public TestRunnerHandler(BundleTreeModel treeModel, TestRunnerView view, TestEntity entity) {
         this.treeModel = treeModel;
@@ -51,21 +51,28 @@ public class TestRunnerHandler implements TestingStateListener {
 
     /**
      * Stops testing process
+     *
+     * if stopNotifying equals true then stops notification
      */
-    public void stop() {
-        runner.stop();
+    public void stop(boolean stopNotifying) {
+        if (stopNotifying) {
+            stopNotifying();
+        }
+        if (runner.wasStarted()) {
+            runner.stop();
+        }
     }
 
     /**
      * Stops notification to the view about changes in testing state
      */
     public void stopNotifying() {
-        isStopped = true;
+        stopNotifications = true;
     }
 
     @Override
     public void onTreeNodeChanged(TestEntity entity) {
-        if (isStopped) {
+        if (stopNotifications) {
             return;
         }
         treeModel.notifyTreeNodeChanged(entity);
@@ -73,7 +80,7 @@ public class TestRunnerHandler implements TestingStateListener {
 
     @Override
     public <C extends TestEntity> void onTreeNodeAdded(CompositeTestEntity<C> parent, C child) {
-        if (isStopped) {
+        if (stopNotifications) {
             return;
         }
         treeModel.notifyTreeNodeAdded(parent, child);
@@ -82,7 +89,7 @@ public class TestRunnerHandler implements TestingStateListener {
 
     @Override
     public void onLogChanged() {
-        if (isStopped) {
+        if (stopNotifications) {
             return;
         }
         view.updateLogText();
@@ -90,7 +97,7 @@ public class TestRunnerHandler implements TestingStateListener {
 
     @Override
     public void onStatisticsUpdated(Statistics newStatistics) {
-        if (isStopped) {
+        if (stopNotifications) {
             return;
         }
         view.updateStatistics(newStatistics);
@@ -98,7 +105,7 @@ public class TestRunnerHandler implements TestingStateListener {
 
     @Override
     public void onFailure(String message) {
-        if (isStopped) {
+        if (stopNotifications) {
             return;
         }
         view.setRunStopEnabled(false, false);
@@ -107,7 +114,7 @@ public class TestRunnerHandler implements TestingStateListener {
 
     @Override
     public void onFinish() {
-        if (isStopped) {
+        if (stopNotifications) {
             return;
         }
         view.setRunStopEnabled(true, false);
