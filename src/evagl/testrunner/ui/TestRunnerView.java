@@ -145,17 +145,16 @@ public class TestRunnerView {
         invokeLater(() -> tree.setSelectionPath(entity.getTreePath()));
     }
 
-    public void setRunEnabled(boolean isEnabled) {
-        invokeLater(() -> runButton.setEnabled(isEnabled));
-        if (isEnabled) {
-            tree.addMouseListener(treeMouseListener);
-        } else {
-            tree.removeMouseListener(treeMouseListener);
-        }
-    }
-
-    public void setStopEnabled(boolean isEnabled) {
-        invokeLater(() -> stopButton.setEnabled(isEnabled));
+    public void setRunStopEnabled(boolean isRunEnabled, boolean isStopEnabled) {
+        invokeLater(() -> {
+            runButton.setEnabled(isRunEnabled);
+            stopButton.setEnabled(isStopEnabled);
+            if (isRunEnabled) {
+                tree.addMouseListener(treeMouseListener);
+            } else {
+                tree.removeMouseListener(treeMouseListener);
+            }
+        });
     }
 
     public void showErrorMessage(String message) {
@@ -163,32 +162,36 @@ public class TestRunnerView {
     }
 
     public void updateLogText() {
-        TreePath path = tree.getSelectionPath();
-        if (path != null) {
-            TestEntity entity = (TestEntity) path.getLastPathComponent();
-            if (entity != null) {
-                invokeLater(() -> logArea.setText(entity.getLog()));
+        invokeLater(() -> {
+            TreePath path = tree.getSelectionPath();
+            if (path != null) {
+                TestEntity entity = (TestEntity) path.getLastPathComponent();
+                if (entity != null) {
+                    logArea.setText(entity.getLog());
+                }
             }
-        }
+        });
     }
 
     public void updateStatistics(Statistics statistics) {
-        if (statistics.total == 0) {
-            invokeLater(() -> statsLabel.setText(""));
-            return;
-        }
-        StringBuilder builder = new StringBuilder(statistics.status.toString());
-        builder.append(": ");
-        builder.append(statistics.passed);
-        builder.append(" passed");
-        if (statistics.failed != 0) {
-            builder.append(", ");
-            builder.append(statistics.failed);
-            builder.append(" failed");
-        }
-        builder.append(" from ");
-        builder.append(statistics.total);
-        builder.append(" tests");
-        invokeLater(() -> statsLabel.setText(builder.toString()));
+        invokeLater(() -> {
+            if (statistics.total == 0) {
+                statsLabel.setText("");
+                return;
+            }
+            StringBuilder builder = new StringBuilder(statistics.status.toString());
+            builder.append(": ");
+            builder.append(statistics.passed);
+            builder.append(" passed");
+            if (statistics.failed != 0) {
+                builder.append(", ");
+                builder.append(statistics.failed);
+                builder.append(" failed");
+            }
+            builder.append(" from ");
+            builder.append(statistics.total);
+            builder.append(" tests");
+            statsLabel.setText(builder.toString());
+        });
     }
 }

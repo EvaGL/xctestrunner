@@ -38,15 +38,13 @@ public class TestRunnerHandler implements TestingStateListener {
     public void run() {
         treeModel.clear();
         view.selectNode(treeModel.getRoot());
-        view.setRunEnabled(false);
-        view.setStopEnabled(true);
+        view.setRunStopEnabled(false, true);
 
         try {
             runner.run();
         } catch (IOException e) {
             treeModel.getRoot().setStatus(Status.FAILED);
-            view.setRunEnabled(true);
-            view.setStopEnabled(false);
+            view.setRunStopEnabled(true, false);
             view.showErrorMessage("Can't start xctest process. Check if XCode installed");
         }
     }
@@ -103,8 +101,7 @@ public class TestRunnerHandler implements TestingStateListener {
         if (isStopped) {
             return;
         }
-        view.setRunEnabled(false);
-        view.setStopEnabled(false);
+        view.setRunStopEnabled(false, false);
         view.showErrorMessage(message);
     }
 
@@ -113,7 +110,6 @@ public class TestRunnerHandler implements TestingStateListener {
         if (isStopped) {
             return;
         }
-        view.setRunEnabled(true);
-        view.setStopEnabled(false);
+        view.setRunStopEnabled(true, false);
     }
 }
