@@ -17,7 +17,7 @@ public class TestEntityTest {
         TestCase case2 = suite.createTestCase("c");
         case2.addLogLine("second");
 
-        assertThat(case1.getLog(), is("first\n"));
-        assertThat(suite.getLog(), is("first\nsecond\n"));
+        assertThat(case1.getLog(), is("first"));
+        assertThat(suite.getLog(), is("firstsecond"));
     }
 }

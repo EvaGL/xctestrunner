@@ -32,6 +32,5 @@ public class TestCase extends TestEntity {
      */
     public void addLogLine(String logLine) {
         logOutput.append(logLine);
-        logOutput.append('\n');
     }
 }

@@ -100,7 +100,7 @@ public class TestingStateBuilderTest {
         goInsideTestCase("a", "b");
 
         builder.onLogLine("log");
-        assertThat(root.getChild(0).getChild(0).getLog(), is("log\n"));
+        assertThat(root.getChild(0).getChild(0).getLog(), is("log"));
     }
 
     @Test

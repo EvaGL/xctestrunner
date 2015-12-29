@@ -51,7 +51,7 @@ public class OutputParserTest {
 
         InOrder order = inOrder(listener);
         order.verify(listener).onTestCaseStarted("Test", "testWrong");
-        order.verify(listener).onLogLine("Some error string");
+        order.verify(listener).onLogLine("Some error string\n");
         order.verify(listener).onTestCaseFailed("Test", "testWrong");
 
         verify(listener).onParsingFinished();
@@ -69,5 +69,15 @@ public class OutputParserTest {
     public void failedLineParsing() {
         parseString("Failure: fail message\nAnother line");
         verify(listener, only()).onFailure("fail message");
+    }
+
+    @Test
+    public void logAndTestCaseInOneLine() {
+        parseString("textTest Case '-[Test testLog]' started.\n");
+
+        verify(listener).onLogLine("text");
+        verify(listener).onTestCaseStarted("Test", "testLog");
+
+        verify(listener).onParsingFinished();
     }
 }

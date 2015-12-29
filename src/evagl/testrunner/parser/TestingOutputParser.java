@@ -11,9 +11,9 @@ import java.util.regex.Pattern;
 
 public class TestingOutputParser {
 
-    private static final Pattern SUITE_PATTERN = Pattern.compile("Test Suite '([^']+)' (\\w+) at [\\d\\s:\\-.]+");
+    private static final Pattern SUITE_PATTERN = Pattern.compile("(.*)Test Suite '([^']+)' (\\w+) at [\\d\\s:\\-.]+$");
 
-    private static final Pattern CASE_PATTERN = Pattern.compile("Test Case '-\\[([^'\\s]+) ([^']+)\\]' (\\w+)( \\([^)]+\\))?\\.");
+    private static final Pattern CASE_PATTERN = Pattern.compile("(.*)Test Case '-\\[([^'\\s]+) ([^']+)\\]' (\\w+)( \\([^)]+\\))?\\.$");
 
     private static final String PASSED = "passed";
 
@@ -52,8 +52,12 @@ public class TestingOutputParser {
 
                 Matcher suiteMatcher = SUITE_PATTERN.matcher(line);
                 if (suiteMatcher.matches()) {
-                    String suiteName = suiteMatcher.group(1);
-                    switch (suiteMatcher.group(2)) {
+                    String log = suiteMatcher.group(1);
+                    String suiteName = suiteMatcher.group(2);
+                    if (!log.isEmpty()) {
+                        listener.onLogLine(log);
+                    }
+                    switch (suiteMatcher.group(3)) {
                         case STARTED:
                             listener.onTestSuiteStarted(suiteName);
                             continue;
@@ -70,9 +74,13 @@ public class TestingOutputParser {
 
                 Matcher caseMatcher = CASE_PATTERN.matcher(line);
                 if (caseMatcher.matches()) {
-                    String suiteName = caseMatcher.group(1);
-                    String testName = caseMatcher.group(2);
-                    switch (caseMatcher.group(3)) {
+                    String log = caseMatcher.group(1);
+                    if (!log.isEmpty()) {
+                        listener.onLogLine(log);
+                    }
+                    String suiteName = caseMatcher.group(2);
+                    String testName = caseMatcher.group(3);
+                    switch (caseMatcher.group(4)) {
                         case STARTED:
                             listener.onTestCaseStarted(suiteName, testName);
                             continue;
@@ -88,7 +96,7 @@ public class TestingOutputParser {
                 if (isStatsLine) {
                     isStatsLine = false;
                 } else {
-                    listener.onLogLine(line);
+                    listener.onLogLine(line + '\n');
                 }
             }
             listener.onParsingFinished();
