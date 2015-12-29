@@ -17,7 +17,7 @@ public abstract class TestEntity {
 
     private final String name;
 
-    private Status status = Status.RUNNING;
+    private volatile Status status = Status.RUNNING;
 
     protected TestEntity(TestEntity parent, String name) {
         this.parent = parent;

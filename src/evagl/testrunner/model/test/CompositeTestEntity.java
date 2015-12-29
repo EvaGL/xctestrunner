@@ -37,13 +37,8 @@ public abstract class CompositeTestEntity<Child extends TestEntity> extends Test
     /**
      * @return index of child or -1 if it's not a child of this node
      */
-    public int getIndexOfChild(TestEntity child) {
-        for (int i = 0; i < children.size(); ++i) {
-            if (children.get(i).equals(child)) {
-                return i;
-            }
-        }
-        return -1;
+    public int getIndexOfChild(Child child) {
+        return children.indexOf(child);
     }
 
     @Override

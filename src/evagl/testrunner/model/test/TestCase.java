@@ -5,7 +5,7 @@ import evagl.testrunner.runner.scope.TestingScope;
 
 public class TestCase extends TestEntity {
 
-    private final StringBuilder logOutput = new StringBuilder();
+    private final StringBuffer logOutput = new StringBuffer();
 
     TestCase(CompositeTestEntity parent, String name) {
         super(parent, name);
