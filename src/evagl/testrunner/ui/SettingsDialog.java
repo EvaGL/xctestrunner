@@ -18,7 +18,7 @@ public class SettingsDialog extends JDialog {
 
     private JComponent createDialogUi() {
         JLabel pathLabel = new JLabel("Path to XCode: ");
-        JTextField pathField = new JTextField(SettingsManager.loadSettings().getPathToXcode().getPath());
+        JTextField pathField = new JTextField(SettingsManager.INSTANCE.loadSettings().getPathToXcode().getPath());
         JButton pathSelection = new JButton(Icons.MORE);
         pathSelection.addActionListener(e -> showFileChooser(pathField));
 
@@ -30,7 +30,7 @@ public class SettingsDialog extends JDialog {
 
         JButton okButton = new JButton("OK");
         okButton.addActionListener(e -> {
-            SettingsManager.saveSettings(new Settings(new File(pathField.getText())));
+            SettingsManager.INSTANCE.saveSettings(new Settings(new File(pathField.getText())));
             dispose();
         });
         JButton cancelButton = new JButton("Cancel");

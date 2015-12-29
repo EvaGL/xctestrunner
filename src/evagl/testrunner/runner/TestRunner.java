@@ -26,7 +26,7 @@ public class TestRunner {
     private Process process;
 
     public TestRunner(File testBundle, TestingScope scope, TestingOutputListener listener) {
-        Settings settings = SettingsManager.loadSettings();
+        Settings settings = SettingsManager.INSTANCE.loadSettings();
         processBuilder = new ProcessBuilder(
                 new File(settings.getPathToXcode(), PATH_TO_XCTEST).getPath(),
                 "-XCTest",
