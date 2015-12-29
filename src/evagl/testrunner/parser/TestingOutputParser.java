@@ -27,6 +27,8 @@ public class TestingOutputParser {
 
     private final TestingOutputListener listener;
 
+    private volatile boolean isStopped = false;
+
     /**
      * Parses given steam and produces events during it.
      *
@@ -38,12 +40,19 @@ public class TestingOutputParser {
         this.listener = listener;
     }
 
+    /**
+     * Stop subsequent parsing of stream
+     */
+    public void stop() {
+        isStopped = true;
+    }
+
     public void parse() {
         BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
         String line;
         boolean isStatsLine = false;
         try {
-            while ((line = reader.readLine()) != null) {
+            while (!isStopped && (line = reader.readLine()) != null) {
                 if (line.startsWith(FAILURE)) {
                     String failureMessage = line.substring(FAILURE.length());
                     listener.onFailure(failureMessage);
@@ -101,7 +110,11 @@ public class TestingOutputParser {
             }
             listener.onParsingFinished();
         } catch (IOException e) {
-            listener.onFailure(e.getMessage());
+            if (isStopped) {
+                listener.onParsingFinished();
+            } else {
+                listener.onFailure(e.getMessage());
+            }
         } finally {
             IOUtils.closeSilently(reader);
         }

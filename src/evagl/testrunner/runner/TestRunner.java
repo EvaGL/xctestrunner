@@ -25,6 +25,8 @@ public class TestRunner {
 
     private Process process;
 
+    private TestingOutputParser parser;
+
     public TestRunner(File testBundle, TestingScope scope, TestingOutputListener listener) {
         Settings settings = SettingsManager.INSTANCE.loadSettings();
         processBuilder = new ProcessBuilder(
@@ -51,7 +53,7 @@ public class TestRunner {
         }
         process = processBuilder.start();
 
-        TestingOutputParser parser = new TestingOutputParser(process.getInputStream(), listener);
+        parser = new TestingOutputParser(process.getInputStream(), listener);
         parserExecutor.execute(parser::parse);
     }
 
@@ -67,6 +69,7 @@ public class TestRunner {
             throw new IllegalStateException("Process wasn't started yet");
         }
 
+        parser.stop();
         process.destroyForcibly();
     }
 
