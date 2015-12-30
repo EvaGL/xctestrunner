@@ -15,5 +15,5 @@ public interface TestingOutputListener {
     void onLogLine(String line);
 
     void onParsingFinished();
-    void onFailure(String message);
+    void onFailure(String message, boolean canRunAgain);
 }

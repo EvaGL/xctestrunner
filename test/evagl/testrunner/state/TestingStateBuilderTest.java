@@ -115,7 +115,7 @@ public class TestingStateBuilderTest {
 
     @Test
     public void failureShouldSetStatusToFailed() {
-        builder.onFailure("aaa");
+        builder.onFailure("aaa", false);
 
         assertThat(root.getStatus(), is(Status.FAILED));
     }
@@ -140,9 +140,9 @@ public class TestingStateBuilderTest {
 
     @Test
     public void notifyAboutFailure() {
-        builder.onFailure("aaa");
+        builder.onFailure("aaa", false);
 
-        verify(listener).onFailure("aaa");
+        verify(listener).onFailure("aaa", false);
     }
 
     @Test

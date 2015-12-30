@@ -104,11 +104,11 @@ public class TestRunnerHandler implements TestingStateListener {
     }
 
     @Override
-    public void onFailure(String message) {
+    public void onFailure(String message, boolean canRunAgain) {
         if (stopNotifications) {
             return;
         }
-        view.setRunStopEnabled(false, false);
+        view.setRunStopEnabled(canRunAgain, false);
         view.showErrorMessage(message);
     }
 

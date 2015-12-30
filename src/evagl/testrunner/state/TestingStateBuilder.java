@@ -132,9 +132,9 @@ public class TestingStateBuilder implements TestingOutputListener {
     }
 
     @Override
-    public void onFailure(String message) {
+    public void onFailure(String message, boolean canRunAgain) {
         setStatusToRunningEntities(Status.FAILED);
-        listener.onFailure(message);
+        listener.onFailure(message, canRunAgain);
     }
 
     private void setStatusToRunningEntities(Status status) {

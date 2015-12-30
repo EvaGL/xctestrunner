@@ -68,7 +68,7 @@ public class OutputParserTest {
     @Test
     public void failedLineParsing() {
         parseString("Failure: fail message\nAnother line");
-        verify(listener, only()).onFailure("fail message");
+        verify(listener, only()).onFailure("fail message",  false);
     }
 
     @Test

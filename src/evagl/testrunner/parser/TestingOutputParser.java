@@ -55,7 +55,7 @@ public class TestingOutputParser {
             while (!isStopped && (line = reader.readLine()) != null) {
                 if (line.startsWith(FAILURE)) {
                     String failureMessage = line.substring(FAILURE.length());
-                    listener.onFailure(failureMessage);
+                    listener.onFailure(failureMessage, false);
                     return;
                 }
 
@@ -113,7 +113,7 @@ public class TestingOutputParser {
             if (isStopped) {
                 listener.onParsingFinished();
             } else {
-                listener.onFailure(e.getMessage());
+                listener.onFailure(e.getMessage(), true);
             }
         } finally {
             IOUtils.closeSilently(reader);

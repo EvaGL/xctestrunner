@@ -18,5 +18,5 @@ public interface TestingStateListener {
 
     void onFinish();
 
-    void onFailure(String message);
+    void onFailure(String message, boolean canRunAgain);
 }

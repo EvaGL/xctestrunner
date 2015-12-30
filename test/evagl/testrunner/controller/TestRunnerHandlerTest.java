@@ -33,9 +33,10 @@ public class TestRunnerHandlerTest {
 
     @Test
     public void failureShouldBePassedToView() {
-        handler.onFailure("Message");
+        handler.onFailure("Message", false);
 
         verify(view).showErrorMessage("Message");
+        verify(view).setRunStopEnabled(false, false);
     }
 
     @Test
@@ -66,7 +67,7 @@ public class TestRunnerHandlerTest {
     @Test
     public void noEventsAfterStopNotifying() {
         handler.stopNotifying();
-        handler.onFailure("Message");
+        handler.onFailure("Message", false);
         handler.onFinish();
         handler.onLogChanged();
         handler.onStatisticsUpdated(null);
