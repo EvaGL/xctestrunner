@@ -36,7 +36,7 @@ public class TestRunnerHandler implements TestingStateListener {
      * Runs testing process
      */
     public void run() {
-        treeModel.clear();
+        view.setBundleTreeModel(treeModel);
         view.selectNode(treeModel.getRoot());
         view.setRunStopEnabled(false, true);
 

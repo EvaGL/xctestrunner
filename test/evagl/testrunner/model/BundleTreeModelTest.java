@@ -75,25 +75,6 @@ public class BundleTreeModelTest {
     }
 
     @Test
-    public void modelShouldNotifyListenersAboutClear() {
-        TreeModelListener listener = mock(TreeModelListener.class);
-        model.addTreeModelListener(listener);
-        TestBundle root = model.getRoot();
-
-        model.clear();
-        assertThat(root.getChildCount(), is(0));
-
-        ArgumentCaptor<TreeModelEvent> argument = ArgumentCaptor.forClass(TreeModelEvent.class);
-        verify(listener).treeStructureChanged(argument.capture());
-
-        TreeModelEvent event = argument.getValue();
-        assertThat(event.getChildIndices(), is(new int[0]));
-        assertThat(event.getChildren(), nullValue());
-        assertThat(event.getTreePath(), is(root.getTreePath()));
-        assertThat(event.getSource(), is(root));
-    }
-
-    @Test
     public void modelShouldNotifyListenersAboutChanges() {
         TreeModelListener listener = mock(TreeModelListener.class);
         model.addTreeModelListener(listener);

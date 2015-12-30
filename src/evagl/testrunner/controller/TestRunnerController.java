@@ -13,18 +13,17 @@ public class TestRunnerController {
 
     private final TestRunnerView view;
 
-    private BundleTreeModel treeModel;
-
     private TestRunnerHandler runnerHandler;
+
+    private File pathToBundle;
 
     public TestRunnerController(TestRunnerView view) {
         this.view = view;
     }
 
     public void onNewBundle(File bundle) {
-        treeModel = new BundleTreeModel(bundle);
-        view.setBundleTreeModel(treeModel);
-        runTests(treeModel.getRoot());
+        pathToBundle = bundle;
+        runTests(null);
     }
 
     public void runTests(TestEntity entity) {
@@ -33,6 +32,10 @@ public class TestRunnerController {
             runnerHandler = null;
         }
 
+        BundleTreeModel treeModel = new BundleTreeModel(pathToBundle);
+        if (entity == null) {
+            entity = treeModel.getRoot();
+        }
         runnerHandler = new TestRunnerHandler(treeModel, view, entity);
         runnerHandler.run();
     }

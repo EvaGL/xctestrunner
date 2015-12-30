@@ -74,17 +74,6 @@ public class BundleTreeModel implements TreeModel {
     }
 
     /**
-     * Removes all nodes in model except root and notifies all listeners about it
-     */
-    public void clear() {
-        bundle.clearChildren();
-        TreeModelEvent event = new TreeModelEvent(bundle, bundle.getTreePath());
-        for (TreeModelListener listener : listeners) {
-            listener.treeStructureChanged(event);
-        }
-    }
-
-    /**
      * Notifies all listeners about changes in one node
      * @param entity node that was changed
      */
