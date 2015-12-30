@@ -69,13 +69,13 @@ public class TestRunnerView {
     }
 
     private JComponent initTreeComponent() {
+        tree.setModel(new BundleTreeModel(null));
         tree.setCellRenderer(new TestTreeCellRenderer());
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         tree.addTreeSelectionListener(event -> {
             TestEntity entity = (TestEntity) event.getPath().getLastPathComponent();
             logArea.setText(entity.getLog());
         });
-        tree.setModel(new BundleTreeModel(null));
         tree.setShowsRootHandles(true);
         JScrollPane treeScrollPane = new JScrollPane(
                 tree,
